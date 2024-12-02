@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#home">Home</a>
+        <a href="#product">Product</a>
+        <a href="#about-us">About Us</a>
+        <a href="#magazine">Magazine</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <section id="home" class="section">
+        <h1>
+            Welcome To Our Store
+        </h1>
+        <p>
+            Find Amazing product and stories here!
+        </p>
+    </section>
+    <section id="products" class="section">
+        <h2>
+            Our Product
+        </h2>
+       <div id="product-container" class="product-grid"></div>
+    </section>
+    <section id="About-us" class="section">
+          <h2>
+            About Us
+          </h2>
+          <p>
+            we are here to sell the best quality product with a very good price
+          </p>
+    </section>
+    <section id="Magazine" class="section">
+        <h2>
+            Magazine
+        </h2>
+        <div class="magazine-carousel">
+            <button id="scroll-left">⬅</button>
+            <div id="magazine-container" class="carousel"></div>
+            <button id="scroll-right">➡</button>
+        </div>
+    </section>
+
+    <section>
+        <h2>
+            Contact Us
+        </h2>
+        <form id="Contact-form">
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" required>
+            <label for="email">Email:</label>
+            <input type="text" name="email" id="email">
+            <label for="message">Message</label>
+            <input type="text" name="message" id="message">
+            <textarea name="message" id="message" rows="4" required></textarea>
+            <button type="submit">Send</button>
+        </form>
+    </section>
+    <footer>
+        <p>
+             All right reserved &copy; 2024
+        </p>
+    </footer>
+    <script src="app.js"></script>
+</body>
+</html>
+<style>
+    body{
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        scroll-behavior: smooth;
+        }
+        .section{
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .navbar{
+            position: fixed;
+            top: 0;
+            width: 100vw;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+            z-index: 1000;
+        }
+        .navbar a{
+            color: white;
+            text-align: none;
+            padding: 10px 20px;
+        }
+        .navbar a:hover{
+            background-color: purple;
+            border-radius: 5px;
+        }
+        .product-grid{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .product{
+            border: 1px solid gray;
+            border-radius: 8px;
+            padding: 10px;
+            width: 200px;
+            text-align: center;
+        }
+        product img{
+            max-width: 100%;
+            border-radius: 5px;
+        }
+
+        .magazine-carousel{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .caroucel{
+            display: flex;
+            overflow-x: scroll;
+            scroll-snap-type:x mandatory;
+            gap: 20px;
+            width: 80%;
+        }
+        .caroucel img{
+            scroll-snap-align:center ;
+            border-radius:8px ;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+        }
+        .footer{
+            background-color: black;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+</style>
+<script>
+    document.addEventListener("DOMContentLoaded",()=>{
+        fetch('product.json')
+        .then(Response => Response.json())
+        .then(data =>{
+            displayProducts(data.products);
+            displayMagazine(data.magazine);
+        });
+        function displayProducts(products) {
+            const productContainer = document.getElementById('product-container');
+            products.forEach(product => {
+                  const productDiv = document.getElementById('div');
+                  productDiv.classList.add('product');
+                  product.innerHTML = `
+                   <img src="${product.image}" alt="${product.name}">
+                   <h3>${product.name}</h3>
+                   <p>${product.description}</p>
+                   <p><strong>$${product.price}</strong></p>`;
+                   productContainer.appendChild(productDiv);
+            });
+
+            function displayMagazine(images){
+                const magazineContainer = document.getElementById('magazine-container');
+                images.forEach(image => {
+                    const image = document.createElement('img');
+                    img.src = image.src;
+                    img.alt = image.alt;
+                    img.title = image.description;
+                    magazineContainer.appendChild(img);
+                });
+            }
+            document.getElementById('scroll-left').addEventListener('click',()=>{
+                document.getElementById('magazine-container').scrollBy({left:-150, behavior:'smooth'});
+            });
+            document.getElementById('scroll-right').addEventListener('click',()=>{
+                document.getElementById('magazine-container').scrollBy({left:150, behavior:'smooth'});
+            });
+            document.getElementById('contact-form').addEventListener('submit',(e)=>{
+                e.preventDefault();
+                alert('thank you for your message!');
+            })
+        }
+    })
+</script>
